@@ -1,0 +1,116 @@
+﻿@*@model IEnumerable<ScrumProject.Models.Project>*@
+@model ScrumProject.ViewModels.ProjectIndexData
+
+@{
+    ViewBag.Title = "Projects";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table>
+    <tr>
+        <th>
+            Name
+        </th>
+        <th>
+            Description
+        </th>
+        <th></th>
+        @*<th></th>
+        <th>
+            Stories
+        </th>*@
+        @*<th>
+            Sprints
+        </th>*@
+    </tr>
+
+@foreach (var item in Model.Projects) {
+    string selectedRow = "";
+    if (item.Id == ViewBag.ProjectID)
+    {
+        selectedRow = "selectedrow";
+    } 
+    <tr class="@selectedRow" valign="top">
+        <td>
+            @Html.DisplayFor(modelItem => item.Name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Description)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
+            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
+        </td>
+        @*<td></td>
+        <td>
+            @Html.ActionLink("View", "Index", new { id=item.Id}) 
+        </td>*@
+        @*<td>
+             @Html.ActionLink("View", "Index", new { id=item.Id})
+        </td>*@
+    </tr>
+}
+
+</table>
+
+@if (Model.Stories != null)
+{ 
+    <h3>Stories in Project</h3> 
+<table> 
+    <tr> 
+        <th></th> 
+        <th>Name</th> 
+        <th>Description</th> 
+        <th>Tests</th>
+        <th>Priority</th>
+        <th>Business value</th>
+        <th>Status</th>
+        <th>Notes</th>
+        <th>Points</th>
+    </tr> 
+ 
+    @foreach (var item in Model.Stories)
+    {
+        string selectedRow = "";
+        if (item.Id == ViewBag.StoriesID)
+        {
+            selectedRow = "selectedrow";
+        } 
+    <tr class="@selectedRow"> 
+        @*<td> 
+            @Html.ActionLink("Select", "Index", new { storiesID = item.Id }) 
+        </td>*@ 
+        <td> 
+            @item.Name
+        </td> 
+        <td> 
+            @item.Description 
+        </td> 
+        <td> 
+            @item.Tests
+        </td> 
+        <td>
+            @item.Priority
+        </td>
+        <td>
+            @item.BusinessValue
+        </td>
+        <td>
+            @item.Status
+        </td>
+        <td>
+            @item.Notes
+        </td>
+        <td>
+            @item.Points
+        </td>
+    </tr> 
+    } 
+ 
+</table> 
+}

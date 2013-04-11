@@ -1,0 +1,86 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+
+namespace ScrumProject.Models
+{
+    public class ProjectRepository : IDisposable
+    {
+        private SMRPO6Context db = new SMRPO6Context();
+
+        public void AddProject(Project project)
+        {
+
+
+            using (var db = new SMRPO6Context())
+            {
+                db.Projects.Add(project);
+                db.SaveChanges();
+
+            }
+        }
+        public IQueryable<Project> GetAllProjects()
+        {
+            return db.Projects;
+        }
+
+        public IQueryable<Project> GetAllProjects(int id)
+        {
+            return from Project in db.Projects
+                   where Project.Id == id
+                   select Project;
+        }
+
+        public Project GetProject(int id)
+        {
+            return (from Project in db.Projects
+                    where Project.Id == id
+                    select Project).SingleOrDefault();
+        }
+
+        public Project GetByNameProject(String name)
+        {
+            return (from Project in db.Projects
+                    where Project.Name == name
+                    select Project).SingleOrDefault();
+        }
+
+        
+
+        public void DeleteProject(Project project)
+        {
+            using (var db = new SMRPO6Context())
+            {
+                db.Projects.Remove(project);
+                db.SaveChanges();
+            }
+           
+        }
+
+        public void Save()
+        {
+            db.SaveChanges();
+        }
+
+        private bool disposed = false;
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!this.disposed)
+            {
+                if (disposing)
+                {
+                    db.Dispose();
+                }
+            }
+            this.disposed = true;
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+    }
+}

@@ -1,0 +1,25 @@
+using System;
+using System.Collections.Generic;
+ 
+using System.ComponentModel.DataAnnotations.Schema;
+namespace ScrumProject.Models
+{
+	 
+    [Table("User", Schema="dbo")] 
+ 
+    public partial class User
+    {
+        public User()
+        {
+            this.Project_User = new List<Project_User>();
+        }
+
+        public string Username { get; set; }
+        public string Name { get; set; }
+        public string Surname { get; set; }
+        public string Email { get; set; }
+        public string Password { get; set; }
+        public Nullable<bool> isAdmin { get; set; }
+        public virtual ICollection<Project_User> Project_User { get; set; }
+    }
+}

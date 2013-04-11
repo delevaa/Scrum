@@ -1,0 +1,229 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Data.Entity;
+using System.Linq;
+using System.Web;
+using System.Web.Mvc;
+using ScrumProject.Models;
+using PagedList;
+using System.Security.Principal;
+using System.Web.Security;
+
+namespace ScrumProject.Controllers
+{ 
+    public class UserController : Controller
+    {
+        private SMRPO6Context db = new SMRPO6Context();
+        UserRepository userR = new UserRepository();
+
+        //
+        // GET: /User/
+
+        [Authorize(Roles="admin")]
+        public ViewResult Index(string sortUsers, int? page)
+        {
+            ViewBag.CurrentSort = sortUsers;
+            ViewBag.NameSortParm = sortUsers == "Username" ? "Username desc" : "Username";
+
+            var users = from u in db.Users
+                           select u;
+            switch (sortUsers)
+            {
+                case "Username":
+                    users = users.OrderBy(u => u.Username);
+                    break;
+
+                case "Username desc":
+                    users = users.OrderByDescending(u => u.Username);
+                    break;
+
+                default:
+                    users = users.OrderBy(u => u.Id);
+                    break;
+            }
+            //return View(userR.GetAllUsers());
+            int pageSize = 9;
+            int pageNumber = (page ?? 1);
+            return View(users.ToPagedList(pageNumber, pageSize));
+            
+        }
+
+        //
+        // GET: /User/Details/5
+
+        public ActionResult Details(int id = 0)
+        {
+            User user = db.Users.Find(id);
+            if (user == null) 
+            {
+                return HttpNotFound();            
+            }
+            return View(user);
+        }
+
+        //
+        // GET: /User/Create
+
+        public ActionResult Create()
+        {
+            return View();
+        } 
+
+        //
+        // POST: /User/Create
+
+        [HttpPost]
+        public ActionResult Create(User user)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    if (userR.GetByUsername(user.Username) == null)
+                    {
+                        db.Users.Add(user);
+                        db.SaveChanges();
+                        return RedirectToAction("Index");
+                    }
+                    else 
+                    {
+                        ModelState.AddModelError("", "The username is already used.");
+                    }
+                }
+            }
+            catch (DataException)
+            {
+                ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator.");
+            }
+
+            return View(user);
+        }
+        
+        //
+        // GET: /User/Edit/5
+ 
+        public ActionResult Edit(int id)
+        {
+            //User user = db.Users.Find(id);
+            return View(userR.GetUser(id));
+        }
+
+        //
+        // POST: /User/Edit/5
+
+        [HttpPost]
+        public ActionResult Edit(User user)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    if (userR.GetUsername(user.Id) == user.Username)
+                    {   
+                        db.Entry(user).State = EntityState.Modified;
+                        db.SaveChanges();
+                        return RedirectToAction("Index");
+                    }
+                    else if (userR.GetByUsername(user.Username) == null)
+                    {
+                        db.Entry(user).State = EntityState.Modified;
+                        db.SaveChanges();
+                        return RedirectToAction("Index");
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("", "The username is already used.");
+                    }
+                }
+            }
+            catch (DataException)
+            {
+                ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator.");
+            }
+            return View(user);
+        }
+
+        //
+        // GET: /User/Delete/5
+
+        public ActionResult Delete(int id, bool? saveChangesError)
+        {
+            if (saveChangesError.GetValueOrDefault())
+            {
+                ViewBag.ErrorMessage = "Unable to save changes. Try again, and if the problem persists see your system administrator.";
+            }
+            return View(db.Users.Find(id));
+        }
+
+        //
+        // POST: /User/Delete/5
+
+        [HttpPost, ActionName("Delete")]
+        public ActionResult DeleteConfirmed(int id = 0)
+        {
+            try
+            {
+                User user = db.Users.Find(id);
+                if (user == null)
+                {
+                    return HttpNotFound();
+                }
+                db.Users.Remove(user);
+                db.SaveChanges();
+            }
+            catch (DataException)
+            {
+                return RedirectToAction("Delete",
+                    new System.Web.Routing.RouteValueDictionary { 
+                        { "id", id }, { "saveChangesError", true } });
+            }
+            return RedirectToAction("Index");
+        }
+
+        public User GetUserDetail(int id)
+        {
+
+            //var userDetails = from u in db.Users
+            //                  where u.Id == id
+            //                  select u;
+
+            return db.Users.Find(id);
+        }
+
+        public User GetUserDetail(String username)
+        {
+
+            //var userDetails = from u in db.Users
+            //                  where u.Id == id
+            //                  select u;
+
+            return userR.GetByUsername(username);
+        }
+
+        public void UpdateUserProfile(User userProfile)
+        {
+            //var user = (from u in db.Users
+            //            where u.Id == userProfile.Id
+            //            select u).FirstOrDefault();
+
+            //user.Name = userProfile.Name;
+            //user.Surname = userProfile.Surname;
+            //user.Password = userProfile.Password;
+            //user.Email = userProfile.Email;
+            //user.isAdmin = userProfile.isAdmin;
+            //user.Username = userProfile.Username;
+
+            //db.SaveChanges();
+
+            userR.UpdateUser(userProfile);
+            userR.Save();
+        } 
+
+        protected override void Dispose(bool disposing)
+        {
+            db.Dispose();
+            base.Dispose(disposing);
+        }
+    }
+}

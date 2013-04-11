@@ -1,0 +1,33 @@
+﻿@model ScrumProject.Models.Sprint
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<fieldset>
+    <legend>Sprint</legend>
+
+    <div class="display-label">DateFrom</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.DateFrom)
+    </div>
+
+    <div class="display-label">DateTo</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.DateTo)
+    </div>
+
+    <div class="display-label">Velocity</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Velocity)
+    </div>
+</fieldset>
+@using (Html.BeginForm()) {
+    <p>
+        <input type="submit" value="Delete" /> |
+        @Html.ActionLink("Back to List", "Index")
+    </p>
+}

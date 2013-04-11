@@ -1,0 +1,84 @@
+﻿@*@model ScrumProject.Models.Project*@
+@model ScrumProject.ViewModels.ProjectIndexData
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<fieldset>
+    <legend>Project</legend>
+
+    <div class="display-label">Name</div>
+    <div class="display-field">
+        @ViewBag.projectName
+    </div>
+
+    <div class="display-label">Description</div>
+    <div class="display-field">
+        @ViewBag.projectsDesc
+    </div>
+</fieldset>
+
+@if (Model.Stories != null)
+{ 
+    <h3>Stories in Project</h3> 
+<table> 
+    <tr> 
+        <th></th> 
+        <th>Name</th> 
+        <th>Description</th> 
+        <th>Tests</th>
+        <th>Priority</th>
+        <th>Business value</th>
+        <th>Status</th>
+        <th>Notes</th>
+        <th>Points</th>
+    </tr> 
+ 
+    @foreach (var item in Model.Stories)
+    {
+        string selectedRow = "";
+        if (item.Id == ViewBag.StoriesID)
+        {
+            selectedRow = "selectedrow";
+        } 
+    <tr class="@selectedRow"> 
+        @*<td> 
+            @Html.ActionLink("Select", "Index", new { storiesID = item.Id }) 
+        </td>*@ 
+        <td> 
+            @item.Name
+        </td> 
+        <td> 
+            @item.Description 
+        </td> 
+        <td> 
+            @item.Tests
+        </td> 
+        <td>
+            @item.Priority
+        </td>
+        <td>
+            @item.BusinessValue
+        </td>
+        <td>
+            @item.Status
+        </td>
+        <td>
+            @item.Notes
+        </td>
+        <td>
+            @item.Points
+        </td>
+    </tr> 
+    } 
+</table> 
+}
+ 
+<p>
+   @* @Html.ActionLink("Edit", "Edit", new { id=Model.Projects.First().Id }) |*@
+   @Html.ActionLink("Manage Stories", "Index", "Story", new { projectId=Model.Projects.First().Id }, null) |
+   @Html.ActionLink("Back to List", "Index")
+</p>

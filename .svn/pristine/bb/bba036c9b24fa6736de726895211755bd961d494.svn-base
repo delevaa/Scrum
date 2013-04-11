@@ -1,0 +1,39 @@
+﻿@model ScrumProject.ViewModels.ProjectIndexData
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Projekti</h2>
+
+<table>
+    <tr>
+        <th>
+            Name
+        </th>
+        <th>
+            Description
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model.Projects) {
+    string selectedRow = "";
+    if (item.Id == ViewBag.ProjectID)
+    {
+        selectedRow = "selectedrow";
+    } 
+    <tr class="@selectedRow" valign="top">
+        <td>
+            @Html.DisplayFor(modelItem => item.Name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Description)
+        </td>
+        <td>
+            @Html.ActionLink(item.Name, "Details", "Project", new { id = item.Id }, null) 
+    </tr>
+}
+
+</table>

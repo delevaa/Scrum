@@ -1,0 +1,60 @@
+﻿@model ScrumProject.Models.Story
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<fieldset>
+    <legend>Story</legend>
+
+    <div class="display-label" style="font-weight:bold">Name</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Name)
+    </div>
+
+    <div class="display-label" style="font-weight:bold">Description</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Description)
+    </div>
+
+    <div class="display-label" style="font-weight:bold">Tests</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Tests)
+    </div>
+
+    <div class="display-label" style="font-weight:bold">Priority</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Priority)
+    </div>
+
+    <div class="display-label" style="font-weight:bold">BusinessValue</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.BusinessValue)
+    </div>
+
+    <div class="display-label" style="font-weight:bold">Status</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Status)
+    </div>
+
+    <div class="display-label" style="font-weight:bold">Notes</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Notes)
+    </div>
+
+    <div class="display-label" style="font-weight:bold">Points</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Points)
+    </div>
+
+    <div class="display-label" style="font-weight:bold">Project</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Project.Name)
+    </div>
+</fieldset>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id=Model.Id }) |
+    @Html.ActionLink("Back to List", "Index", new { projectId = ViewBag.projectId},  null)
+</p>

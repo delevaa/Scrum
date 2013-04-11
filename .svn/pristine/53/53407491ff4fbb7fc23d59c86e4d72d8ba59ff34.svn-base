@@ -1,0 +1,43 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.Mvc;
+using ScrumProject.Models;
+using System.Web.Security;
+
+namespace ScrumProject.Controllers
+{
+    public class LoginController : Controller
+    {
+
+        UserRepository userR = new UserRepository();
+        //
+        // GET: /Login/
+
+        public ActionResult Index()
+        {
+            return View();
+        }
+
+      
+        [HttpPost]
+        public ActionResult Index(User model, string returnUrl)
+        {
+            User user = userR.GetByUsername(model.Username);
+            if ( user == null)
+                return RedirectToAction("Index", "User");
+            if (model.Password.Equals(user.Password))
+            {
+                HttpCookie cookie = new HttpCookie("password");
+                cookie.Value = model.Password.ToString();
+
+                this.ControllerContext.HttpContext.Response.Cookies.Add(cookie);
+                return RedirectToAction("Index", "Home");
+            }
+            return RedirectToAction("Index", "User");
+        }
+
+       
+    }
+}

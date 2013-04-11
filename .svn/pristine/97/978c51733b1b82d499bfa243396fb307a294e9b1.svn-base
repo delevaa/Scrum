@@ -1,0 +1,97 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Data.SqlClient;
+using System.Linq;
+using System.Web;
+
+namespace ScrumProject.Models
+{
+    public class MembersRepository : IDisposable
+    {
+        private SMRPO6Context db = new SMRPO6Context();
+
+        public void AddProject(Members member)
+        {
+            using (var db = new SMRPO6Context())
+            {
+                db.Database.ExecuteSqlCommand("exec dbo.InsertProjectUser @ProjectId,@UserId, @Role",
+                                           new SqlParameter("Id", member.Id),
+                                            new SqlParameter("ProjectId", member.ProjectId),
+                                           new SqlParameter("UserId", member.UserId),
+                                           new SqlParameter("Role", member.Role));
+
+                db.SaveChanges();
+
+            }
+        }
+        public IQueryable<Project> GetAllProjectsOfUser(int Id)
+        {
+            return from Members in db.Members
+                   where Members.UserId == Id
+                   select Members.Project;
+        }
+
+        public IQueryable<User> GetAllMembersOfProject(int id)
+        {
+            return from Members in db.Members
+                   where Members.ProjectId == id
+                   select Members.User;
+        }
+
+        public string GetRole(int id)
+        {
+            return (from Members in db.Members
+                    where Members.Id == id
+                    select Members.Role).SingleOrDefault();
+        }
+
+        public void UpdateRole(int id, string role)
+        {
+            using (var db = new SMRPO6Context())
+            {
+                db.Database.ExecuteSqlCommand("exec dbo.UpdateProjectUser @Id, @Role",
+                                            new SqlParameter("Id", id),
+                                            new SqlParameter("Role", role));
+
+                db.SaveChanges();
+            }
+
+        }
+
+        public void DeleteMember(int id)
+        {
+            using (var db = new SMRPO6Context())
+            {
+                db.Database.ExecuteSqlCommand("exec dbo.DeleteProject_User @Id ",
+                                           new SqlParameter("Id", id));
+                db.SaveChanges();
+            }
+
+        }
+
+        public void Save()
+        {
+            db.SaveChanges();
+        }
+
+        private bool disposed = false;
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!this.disposed)
+            {
+                if (disposing)
+                {
+                    db.Dispose();
+                }
+            }
+            this.disposed = true;
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+    }
+}

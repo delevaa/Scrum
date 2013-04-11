@@ -1,0 +1,142 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Data.Entity;
+using System.Linq;
+using System.Web;
+using System.Web.Mvc;
+using ScrumProject.Models;
+using ScrumProject.ViewModels;
+
+namespace ScrumProject.Controllers
+{ 
+    public class StoryController : Controller
+    {
+        private SMRPO6Context db = new SMRPO6Context();
+        StoryRepository storyR = new StoryRepository();
+
+        //
+        // GET: /Story/
+
+        public ViewResult Index(int projectId)
+        {
+            var stories = db.Stories.Include(s => s.Project.Id);
+            ViewBag.projectId = projectId;
+
+            return View(storyR.GetAllStoriesByProject(projectId));
+        }
+
+        //
+        // GET: /Story/Details/5
+
+        public ViewResult Details(int id)
+        {
+            Story story = db.Stories.Find(id);
+            ViewBag.projectId = story.ProjectId;
+            return View(story);
+        }
+
+        //
+        // GET: /Story/Create
+
+        public ActionResult Create(int projectId)
+        {
+            ViewBag.ProjectId = new SelectList(db.Projects, "Id", "Name");
+            ViewBag.newId = projectId;
+            return View();
+        } 
+
+        
+        // POST: /Story/Create
+
+        [HttpPost]
+        public ActionResult Create(Story story)
+        {
+            if (ModelState.IsValid)
+            {
+                if (storyR.GetStoryFromProjectByName(story.Name, story.ProjectId.Value) == null)
+                {
+                    db.Stories.Add(story);
+                    db.SaveChanges();
+                    return RedirectToAction("Index", new { projectId = story.ProjectId});
+                }
+                else
+                {
+                    ModelState.AddModelError("", "Story with same name already exists.");
+                }
+            }
+          
+            ViewBag.ProjectId = new SelectList(db.Projects, "Id", "Name", story.ProjectId);
+            return View(story);
+        }
+        
+        //
+        // GET: /Story/Edit/5
+ 
+        public ActionResult Edit(int id)
+        {
+            Story story = db.Stories.Find(id);
+            ViewBag.ProjectId = new SelectList(db.Projects, "Id", "Name", story.ProjectId);
+            ViewBag.newId = story.ProjectId;
+            return View(story);
+        }
+
+        //
+        // POST: /Story/Edit/5
+
+        [HttpPost]
+        public ActionResult Edit(Story story)
+        {
+            if (ModelState.IsValid)
+            {
+                if (storyR.GetStoryName(story.Id) == story.Name) 
+                {
+                    db.Entry(story).State = EntityState.Modified;
+                    db.SaveChanges();
+                    return RedirectToAction("Index", new { projectId = story.ProjectId });
+                }
+                else if (storyR.GetStoryByName(story.Name) == null)
+                {
+                    db.Entry(story).State = EntityState.Modified;
+                    db.SaveChanges();
+                    return RedirectToAction("Index", new { projectId = story.ProjectId });
+                }
+                else
+                {
+                    ModelState.AddModelError("", "Story with same name already exists.");
+                }
+            }
+            ViewBag.ProjectId = new SelectList(db.Projects, "Id", "Name", story.ProjectId);
+            return View(story);
+        }
+
+        //
+        // GET: /Story/Delete/5
+ 
+        public ActionResult Delete(int id)
+        {
+            Story story = db.Stories.Find(id);
+            ViewBag.projectId = story.ProjectId;
+            return View(story);
+        }
+
+        //
+        // POST: /Story/Delete/5
+
+        [HttpPost, ActionName("Delete")]
+        public ActionResult DeleteConfirmed(int id)
+        {            
+            Story story = db.Stories.Find(id);
+            int pid = (int)story.ProjectId;
+            db.Stories.Remove(story);
+            db.SaveChanges();
+            return RedirectToAction("Index", new { projectId = pid });
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            db.Dispose();
+            base.Dispose(disposing);
+        }
+    }
+}

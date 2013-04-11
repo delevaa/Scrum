@@ -1,0 +1,15 @@
+﻿@{
+    ViewBag.Title = "Index";
+}
+<div>
+    <table style="margin-left:200px">
+        <tr align="center">
+            <td align="right" valign="middle">
+                <br />
+                <img id="img1" runat="server" src="@Url.Content("~/content/img/logo.jpg")" alt="IMAGES" height="350" width="800"/>
+                <br />
+                <br />
+            </td>
+        </tr>
+    </table>  
+</div>

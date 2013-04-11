@@ -1,0 +1,16 @@
+C:\Users\Aleksandra\Documents\Visual Studio 2010\Projects\Smrpo\ScrumProject\bin\ScrumProject.dll
+C:\Users\Aleksandra\Documents\Visual Studio 2010\Projects\Smrpo\ScrumProject\bin\ScrumProject.pdb
+C:\Users\Aleksandra\Documents\Visual Studio 2010\Projects\Smrpo\ScrumProject\bin\EntityFramework.dll
+C:\Users\Aleksandra\Documents\Visual Studio 2010\Projects\Smrpo\ScrumProject\bin\PagedList.dll
+C:\Users\Aleksandra\Documents\Visual Studio 2010\Projects\Smrpo\ScrumProject\bin\EntityFramework.xml
+C:\Users\Aleksandra\Documents\Visual Studio 2010\Projects\Smrpo\ScrumProject\bin\PagedList.xml
+C:\Users\Aleksandra\Documents\Visual Studio 2010\Projects\Smrpo\ScrumProject\obj\Debug\ResolveAssemblyReference.cache
+C:\Users\Aleksandra\Documents\Visual Studio 2010\Projects\Smrpo\ScrumProject\obj\Debug\ScrumProject.Migrations.initial.resources
+C:\Users\Aleksandra\Documents\Visual Studio 2010\Projects\Smrpo\ScrumProject\obj\Debug\ScrumProject.Migrations.second.resources
+C:\Users\Aleksandra\Documents\Visual Studio 2010\Projects\Smrpo\ScrumProject\obj\Debug\ScrumProject.Migrations.third.resources
+C:\Users\Aleksandra\Documents\Visual Studio 2010\Projects\Smrpo\ScrumProject\obj\Debug\ScrumProject.Migrations.fourth.resources
+C:\Users\Aleksandra\Documents\Visual Studio 2010\Projects\Smrpo\ScrumProject\obj\Debug\ScrumProject.Migrations.sixth.resources
+C:\Users\Aleksandra\Documents\Visual Studio 2010\Projects\Smrpo\ScrumProject\obj\Debug\GenerateResource.read.1.tlog
+C:\Users\Aleksandra\Documents\Visual Studio 2010\Projects\Smrpo\ScrumProject\obj\Debug\GenerateResource.write.1.tlog
+C:\Users\Aleksandra\Documents\Visual Studio 2010\Projects\Smrpo\ScrumProject\obj\Debug\ScrumProject.dll
+C:\Users\Aleksandra\Documents\Visual Studio 2010\Projects\Smrpo\ScrumProject\obj\Debug\ScrumProject.pdb

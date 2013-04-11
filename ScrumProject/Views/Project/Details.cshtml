@@ -1,0 +1,152 @@
+﻿@*@model ScrumProject.Models.Project*@
+@model ScrumProject.ViewModels.ProjectIndexData
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Project details</h2>
+
+<fieldset>
+    <legend>Project</legend>
+
+    <div class="display-label">Name</div>
+    <div class="display-field">
+        @ViewBag.projectName
+    </div>
+
+    <div class="display-label">Description</div>
+    <div class="display-field">
+        @ViewBag.projectsDesc
+    </div>
+</fieldset>
+
+<table>
+<tr>
+<td style="width:610px">
+@if (Model.Stories != null)
+{ 
+    <h3>Stories in Project</h3> 
+<table> 
+    <tr> 
+        <th></th>
+        <th>Name</th> 
+        <th>Description</th> 
+        <th>Tests</th>
+        <th>Priority</th>
+        <th>Business value</th>
+        <th>Status</th>
+        <th>Notes</th>
+        <th>Points</th>
+    </tr> 
+ 
+    @foreach (var item in Model.Stories)
+    {
+        string selectedRow = "";
+        if (item.Id == ViewBag.StoriesID)
+        {
+            selectedRow = "selectedrow";
+        } 
+    <tr class="@selectedRow"> 
+        @*<td> 
+            @Html.ActionLink("Select", "Index", new { storiesID = item.Id }) 
+        </td>*@ 
+        <td>
+            @Html.CheckBox("sprint")
+        </td>
+        <td> 
+            @item.Name
+        </td> 
+        <td> 
+            @item.Description 
+        </td> 
+        <td> 
+            @item.Tests
+        </td> 
+        <td>
+            @item.Priority
+        </td>
+        <td>
+            @item.BusinessValue
+        </td>
+        <td>
+            @item.Status
+        </td>
+        <td>
+            @item.Notes
+        </td>
+        <td>
+            @item.Points
+        </td>
+    </tr> 
+    } 
+</table> 
+}
+</td> 
+
+
+<td style="width:610px">
+@if (Model.Sprints != null)
+{ 
+    <h3>Sprints in Project</h3> 
+<table> 
+    <tr>  
+        <th>Date From</th> 
+        <th>Date To</th> 
+        <th>Velocity</th>
+        <th>Status</th>
+    </tr> 
+ 
+    @foreach (var item in Model.Sprints)
+    {
+        string selectedRow = "";
+        if (item.Id == ViewBag.StoriesID)
+        {
+            selectedRow = "selectedrow";
+        } 
+    <tr class="@selectedRow"> 
+        @*<td> 
+            @Html.ActionLink("Select", "Index", new { storiesID = item.Id }) 
+        </td>*@ 
+        <td> 
+            @item.DateFrom
+        </td> 
+        <td> 
+            @item.DateTo
+        </td> 
+        <td> 
+            @item.Velocity
+        </td> 
+        <td>
+            @item.Status
+        </td>
+    </tr> 
+    } 
+</table> 
+}
+</td>
+</tr>
+<tr>
+<td>
+    <p>
+   @* @Html.ActionLink("Edit", "Edit", new { id=Model.Projects.First().Id }) |*@
+   @if (ViewBag.manageStories){
+    @Html.ActionLink("Manage Stories", "Index", "Story", new { projectId=ViewBag.projectId }, null)
+   }
+    </p>
+</td>
+<td>
+   @if (ViewBag.manageSprints){
+    @Html.ActionLink("Manage Sprints", "Index", "Sprint", new { projectId=ViewBag.projectId }, null)
+    }
+</td>
+</tr>
+<tr>
+<td>
+    <p>
+    @Html.ActionLink("Back to Projects", "Index")
+    </p>
+</td>
+<td></td>
+</tr>
+</table>

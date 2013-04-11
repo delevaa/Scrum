@@ -1,0 +1,25 @@
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Data.Entity.ModelConfiguration;
+
+namespace ScrumProject.Models.Mapping
+{
+    public class SprintMap : EntityTypeConfiguration<Sprint>
+    {
+        public SprintMap()
+        {
+            // Primary Key
+            this.HasKey(t => t.Id);
+
+            // Properties
+
+            // Relationships
+            this.HasOptional(t => t.Project)
+                .WithMany(t => t.Sprints)
+                .HasForeignKey(d => d.ProjectId);
+            this.HasOptional(t => t.Story)
+                .WithMany(t => t.Sprints)
+                .HasForeignKey(d => d.StoryId);
+
+        }
+    }
+}

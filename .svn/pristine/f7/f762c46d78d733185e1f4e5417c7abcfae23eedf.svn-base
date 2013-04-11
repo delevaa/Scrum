@@ -1,0 +1,28 @@
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Data.Entity.ModelConfiguration;
+
+namespace ScrumProject.Models.Mapping
+{
+    public class StoryMap : EntityTypeConfiguration<Story>
+    {
+        public StoryMap()
+        {
+            // Primary Key
+            this.HasKey(t => t.Id);
+
+            // Properties
+            this.Property(t => t.Name)
+                .IsRequired()
+                .HasMaxLength(50);
+
+            this.Property(t => t.Priority)
+                .IsFixedLength()
+                .HasMaxLength(10);
+
+            this.Property(t => t.Status)
+                .IsFixedLength()
+                .HasMaxLength(10);
+
+        }
+    }
+}

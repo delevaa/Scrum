@@ -1,0 +1,54 @@
+﻿@model ScrumProject.Models.Sprint
+
+@{
+    ViewBag.Title = "Edit";
+}
+
+<h2>Edit</h2>
+
+<script src="@Url.Content("~/Scripts/jquery.validate.min.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
+
+@using (Html.BeginForm()) {
+    @Html.ValidationSummary(true)
+    <fieldset>
+        <legend>Sprint</legend>
+
+        @Html.HiddenFor(model => model.Id)
+
+        <p>
+            Current date is: @DateTime.Now.Date
+        </p>
+        <div class="editor-label">
+            @Html.LabelFor(model => model.DateFrom)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.DateFrom)
+            @Html.ValidationMessageFor(model => model.DateFrom)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.DateTo)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.DateTo)
+            @Html.ValidationMessageFor(model => model.DateTo)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Velocity)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Velocity)
+            @Html.ValidationMessageFor(model => model.Velocity)
+        </div>
+
+        <p>
+            <input type="submit" value="Save" />
+        </p>
+    </fieldset>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>

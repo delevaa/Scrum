@@ -1,0 +1,33 @@
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Data.Entity.ModelConfiguration;
+
+namespace ScrumProject.Models.Mapping
+{
+    public class UserMap : EntityTypeConfiguration<User>
+    {
+        public UserMap()
+        {
+            // Primary Key
+            this.HasKey(t => t.Username);
+
+            // Properties
+            this.Property(t => t.Username)
+                .IsRequired()
+                .HasMaxLength(50);
+
+            this.Property(t => t.Name)
+                .HasMaxLength(50);
+
+            this.Property(t => t.Surname)
+                .HasMaxLength(50);
+
+            this.Property(t => t.Email)
+                .HasMaxLength(50);
+
+            this.Property(t => t.Password)
+                .IsRequired()
+                .HasMaxLength(50);
+
+        }
+    }
+}

@@ -1,0 +1,176 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Data.Entity;
+using System.Linq;
+using System.Web;
+using System.Web.Mvc;
+using ScrumProject.Models;
+using ScrumProject.ViewModels;
+
+namespace ScrumProject.Controllers
+{
+    [Authorize(Roles="admin")]
+    public class ProjectController : Controller
+    {
+        private SMRPO6Context db = new SMRPO6Context();
+        UserRepository userR = new UserRepository();
+        ProjectRepository projectR = new ProjectRepository();
+
+        //
+        // GET: /Project/
+
+        //public ViewResult Index()
+        //{
+        //    return View(db.Projects.ToList());
+        //}
+
+        public ActionResult Index(Int32? id)
+        {
+            var viewModel = new ProjectIndexData();
+            viewModel.Projects = db.Projects.Include(i => i.Stories);
+            if (id != null)
+            {
+                ViewBag.ProjectID = id.Value;
+                viewModel.Stories = viewModel.Projects.Where(i => i.Id == id.Value).Single().Stories;
+            }
+            return View(viewModel);            
+        }
+
+        //
+        // GET: /Project/Details/5
+
+        public ViewResult Details(int id)
+        {
+            Project project = db.Projects.Find(id);
+            ViewBag.projectName = project.Name;
+            ViewBag.projectDesc = project.Description;
+            var viewModel = new ProjectIndexData();
+            viewModel.Projects =  db.Projects.Include(i => i.Stories);
+            if (id != null)
+            {
+                ViewBag.projectId = id;
+                viewModel.Stories = viewModel.Projects.Where(i => i.Id == id).Single().Stories;
+            }
+            return View(viewModel);
+        }
+
+        //
+        // GET: /Project/Create
+
+        public ActionResult Create()
+        {
+            return View();
+        } 
+
+        //
+        // POST: /Project/Create
+
+        [HttpPost]
+        public ActionResult Create(Project project)
+        {
+            if (ModelState.IsValid)
+            {
+                db.Projects.Add(project);
+                db.SaveChanges();
+                return RedirectToAction("Index");  
+            }
+
+            return View(project);
+        }
+        
+        //
+        // GET: /Project/Edit/5
+ 
+        public ActionResult Edit(int id)
+        {
+            Project project = db.Projects.Find(id);
+            return View(project);
+        }
+
+        //
+        // POST: /Project/Edit/5
+
+        [HttpPost]
+        public ActionResult Edit(Project project)
+        {
+            if (ModelState.IsValid)
+            {
+                db.Entry(project).State = EntityState.Modified;
+                db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            return View(project);
+        }
+
+        //
+        // GET: /Project/Delete/5
+ 
+        public ActionResult Delete(int id)
+        {
+            Project project = db.Projects.Find(id);
+            return View(project);
+        }
+
+        //
+        // POST: /Project/Delete/5
+
+        [HttpPost, ActionName("Delete")]
+        public ActionResult DeleteConfirmed(int id)
+        {            
+            Project project = db.Projects.Find(id);
+            db.Projects.Remove(project);
+            db.SaveChanges();
+            return RedirectToAction("Index");
+        }
+
+        //
+        // GET: /Project/AddUser
+
+        public ActionResult AddUser(int projectId)
+        {
+            ViewBag.Users = new SelectList(db.Users,"Id","Username");
+            Project_User projectUser = new Project_User();
+            projectUser.ProjectId = projectId;
+            //projectUser.User = new User();
+            //projectUser.Project = db.Projects.Find(projectId);
+            /*if (projectUser.Project == null)
+            {
+                projectUser.Project = new Project();
+            }*/
+            return View(projectUser);
+        }
+
+        //
+        // POST: /Project/AddUser
+
+        [HttpPost]
+        public ActionResult AddUser(Project_User projectUser)
+        {
+            //projectUser.User = projectUser.User.Id;
+            /*if (projectUser.User == null)
+            {
+                ViewData["Users"] = new SelectList(db.Users, "Id", "Username");
+                return View(projectUser);
+            }*/
+            //projectUser.User = userR.GetUser((int)projectUser.UserId);
+            //projectUser.Project = projectR.GetProject((int)projectUser.ProjectId);
+            projectUser.Id = db.Project_User.Local.Count + 5;
+            if (ModelState.IsValid)
+            {
+                db.Project_User.Add(projectUser);
+                db.SaveChanges();
+                return View(projectUser);
+            }
+
+            return View(projectUser);
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            db.Dispose();
+            base.Dispose(disposing);
+        }
+
+    }
+}

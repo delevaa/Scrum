@@ -1,0 +1,36 @@
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Web;
+
+namespace ScrumProject.Models
+{
+    public class UserMetadata
+    {
+        [DisplayName("User ID")]
+        public object Id { get; set; }
+
+        [Required]
+        public object Username { get; set; }
+
+        public object Name { get; set; }
+        
+        public object Surname { get; set; }
+        [Required]
+        [DataType(DataType.Password)]
+        [MinLength(5,ErrorMessage = "Password must be at least 5 characters long")]
+        public object Password { get; set; }
+        
+        [DataType(DataType.EmailAddress)]
+        public object Email { get; set; }
+        
+        [Required]
+        public object isAdmin { get; set; }
+
+        
+
+
+    }
+}
